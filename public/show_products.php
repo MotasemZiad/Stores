@@ -16,6 +16,7 @@
         <?php 
             include_once('shared/header.php');
             include_once('shared/nav.php');
+			# some updates regarding the fucking master branch
         ?>
 		<!-- Section -->
 		<div class="section">
