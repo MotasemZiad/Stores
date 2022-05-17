@@ -1,16 +1,12 @@
 <?php
-    include_once("db/db_connection.php");
+    include_once('db/db_connection.php');
     $errors = [];
     $success = false;
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $name = $_POST['name'];
-        $description = $_POST['description'];
-        $first_price = $_POST['first_price'];
-        $price = $_POST['price'];
-        $quantity = $_POST['quantity'];
+        $address = $_POST['address'];
+        $phone = $_POST['phone'];
         $category_id = $_POST['category_id'];
-        $status = isset($_POST['status']) ? 1 : 0;
-        $date = Date("y-m-d h:i:s");
 
         # Image 
         $file_name = $_FILES['image']['name'];
@@ -26,44 +22,35 @@
         if(empty($name)){
           $errors["name_error"] = "Name is required!";
         }
-        if(empty($description)){
-          $errors["description_error"] = "Description is required!";
+        if(empty($address)){
+          $errors["address_error"] = "Address is required!";
         }
-        if(empty($first_price)){
-          $errors["first_price_error"] = "First Price is required!";
+        if(empty($phone)){
+          $errors["phone_error"] = "Phone number is required!";
         }
-        if(empty($price)){
-          $errors["price_error"] = "Price is required!";
-        }
-        if(empty($quantity)){
-          $errors["quantity_error"] = "Quantity is required!";
-        }
+        // if($file_size > 20000){
+        //   $errors["image_error"] = "Image is too large!";
+        // }
+        // if($file_type != "png" || $file_type != "jpg" || $file_type != "jpeg"){
+        //   $errors["image_error"] = "Image must be from type png or jpg!";
+        // }
+
 
         if(count($errors) > 0){
           $errors['general_error'] = "Please fill fields";
         }else {
-          $query = "UPDATE products SET name='$name', description='$description', first_price='$first_price', price='$price', quantity='$quantity', category_id='$category_id', image='$file_random_name', status='$status' WHERE id='".$_GET['id']."' ";
+          $query = "INSERT INTO stores(name, address, phone, image, category_id) VALUES('$name', '$address', '$phone', '$file_random_name', '$category_id')";
           $result = mysqli_query($connection, $query);
           if($result){
               $errors = [];
               $success = true;
-              header('Location: show_all_products.php');
+              header('Location: show_all_stores.php');
           }else {
               $errors['general_error'] = "Error". mysqli_error($connection);
           }  
         }
     }
-    
-    if(isset($_GET['id'])){
-      $id = $_GET['id'];
-      $query = "SELECT * FROM products WHERE id = $id"; 
-      $result = mysqli_query($connection, $query);
-      $row = mysqli_fetch_assoc($result);
-    }
-
-    // Finish all the tasks except the image part
 ?>
-
 
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
@@ -86,7 +73,7 @@
             <div class="col-md-12">
               <div class="card">
                 <div class="card-header">
-                  <h4 class="card-title" id="basic-layout-form">Product Info</h4>
+                  <h4 class="card-title" id="basic-layout-form">Store Info</h4>
                   <a class="heading-elements-toggle"><i class="la la-ellipsis-v font-medium-3"></i></a>
                   <div class="heading-elements">
                     <ul class="list-inline mb-0">
@@ -103,18 +90,18 @@
                     if(!empty($errors['general_error'])){
                       echo "<div class='alert alert-danger'>". $errors['general_error']. "</div>";
                     }elseif($success){
-                      echo "<div class='alert alert-success'> Product updated successfully</div>";
+                      echo "<div class='alert alert-success'> Category added successfully</div>";
                     }
                   ?>
-                    <form class="form" method="POST" enctype="multipart/form-data" action="<?php $_SERVER['PHP_SELF'] . "?id=$id" ?>">
+                    <form class="form" method="POST" enctype="multipart/form-data" action="<?php $_SERVER['PHP_SELF'] ?>">
                       <div class="form-body">
-                        <h4 class="form-section"><i class="ft-user"></i>Edit product</h4>
+                        <h4 class="form-section"><i class="ft-user"></i>Add a new store</h4>
                         <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
                               <label for="projectinput1">Name</label>
-                              <input type="text" id="projectinput1" class="form-control" placeholder="Enter the name of the product"
-                              name="name" value="<?php echo $row['name'] ?>">
+                              <input type="text" id="projectinput1" class="form-control" placeholder="Enter the name of the store"
+                              name="name">
                               <?php
                                 if(!empty($errors['name_error'])){
                                   echo "<span class='text-danger'>". $errors['name_error']. "</span>";
@@ -124,12 +111,12 @@
                           </div>
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="projectinput2">Description</label>
-                              <input type="text" id="projectinput2" class="form-control" placeholder="Enter the description of the product"
-                              name="description" value="<?php echo $row['description'] ?>">
+                              <label for="projectinput2">Address</label>
+                              <input type="text" id="projectinput2" class="form-control" placeholder="Enter the address of the store"
+                              name="address">
                               <?php
-                                if(!empty($errors['description_error'])){
-                                  echo "<span class='text-danger'>". $errors['description_error']. "</span>";
+                                if(!empty($errors['address_error'])){
+                                  echo "<span class='text-danger'>". $errors['address_error']. "</span>";
                                 }
                               ?>
                             </div>
@@ -138,38 +125,12 @@
                          <div class="row">
                           <div class="col-md-6">
                             <div class="form-group">
-                              <label for="projectinput1">First Price</label>
-                              <input type="number" step="0.01" id="projectinput1" class="form-control" placeholder="Enter the first price of the product"
-                              name="first_price" value="<?php echo $row['first_price'] ?>">
+                              <label for="projectinput1">Phone Number</label>
+                              <input type="text" id="projectinput1" class="form-control" placeholder="Enter the phone number of the store"
+                              name="phone">
                               <?php
-                                if(!empty($errors['first_price_error'])){
-                                  echo "<span class='text-danger'>". $errors['first_price_error']. "</span>";
-                                }
-                              ?>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="projectinput2">Final Price</label>
-                              <input type="number" step="0.01" id="projectinput2" class="form-control" placeholder="Enter the final price of the product"
-                              name="price" value="<?php echo $row['price'] ?>">
-                              <?php
-                                if(!empty($errors['price_error'])){
-                                  echo "<span class='text-danger'>". $errors['price_error']. "</span>";
-                                }
-                              ?>
-                            </div>
-                          </div>
-                        </div>
-                         <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="projectinput1">Quantity</label>
-                              <input type="number" id="projectinput1" class="form-control" placeholder="Enter the quantity"
-                              name="quantity" value="<?php echo $row['quantity'] ?>">
-                              <?php
-                                if(!empty($errors['quantity_error'])){
-                                  echo "<span class='text-danger'>". $errors['quantity_error']. "</span>";
+                                if(!empty($errors['phone_error'])){
+                                  echo "<span class='text-danger'>". $errors['phone_error']. "</span>";
                                 }
                               ?>
                             </div>
@@ -182,8 +143,8 @@
                                 include_once('db/db_connection.php');
                                 $query = 'SELECT * FROM categories';
                                 $result = mysqli_query($connection, $query);
-                                while($category_row = mysqli_fetch_assoc($result)){
-                                    echo '<option value='. $category_row['id'] .'>' . $category_row['name'] . '</option>';
+                                while($row = mysqli_fetch_assoc($result)){
+                                    echo '<option value='. $row['id'] .'>' . $row['name'] . '</option>';
                                 }
                               ?>
                               </select>
@@ -195,7 +156,7 @@
                             <div class="form-group">
                               <label for="projectinput1">Image</label>
                               <input type="file" id="projectinput1" class="form-control"
-                              name="image" value="<?php echo $row['image'] ?>">
+                              name="image">
                               <?php
                                 if(!empty($errors['image_error'])){
                                   echo "<span class='text-danger'>". $errors['image_error']. "</span>";
@@ -203,23 +164,11 @@
                               ?>
                             </div>
                           </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="projectinput3">Status</label>
-                              <input type="checkbox" id="projectinput3" name="status" value="1" 
-                              <?php 
-                                    if($row['status'] == 1){
-                                        echo "checked";
-                                    }
-                                ?>
-                              >
-                            </div>
-                          </div>
                         </div>
                       </div>
                       <div class="form-actions">
                         <button type="submit" class="btn btn-primary">
-                            Update 
+                            Add 
                         </button>
                       </div>
                     </form>

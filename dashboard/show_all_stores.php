@@ -19,7 +19,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h4 class="card-title">All Products</h4>
+                                <h4 class="card-title">All Stores</h4>
                                 <a class="heading-elements-toggle"><i
                                             class="la la-ellipsis-v font-medium-3"></i></a>
                                 <div class="heading-elements">
@@ -38,14 +38,11 @@
                                            class="table display nowrap table-striped table-bordered scroll-horizontal ">
                                         <thead>
                                         <tr>
-                                            <th>Product Name</th>
-                                            <th> Product Details</th>
-                                            <th> Product First Price</th>
-                                            <th> Product Price</th>
-                                            <th> Product Quantity</th>
-                                            <th> Product's Category</th>
-                                            <th>Status</th>
+                                            <th>Store Name</th>
+                                            <th> Store Address</th>
+                                            <th> Store Phone</th>
                                             <th> Image</th>
+                                            <th> Store's Category</th>
                                             <th colspan="2"></th>
                                         </tr>
                                         </thead>
@@ -57,15 +54,10 @@
                                                 $offset = ($page - 1) * $limit;
 
 
-                                                $query = "SELECT * FROM products ORDER BY id DESC LIMIT $limit OFFSET $offset";
+                                                $query = "SELECT * FROM stores ORDER BY id DESC LIMIT $limit OFFSET $offset";
                                                 $result = mysqli_query($connection, $query);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_assoc($result)){
-                                                        if($row['status'] == 1){
-                                                            $status = "<span class='badge badge-success'>Active</span>";
-                                                        }else {
-                                                            $status = "<span class='badge badge-danger'>Inactive</span>";
-                                                        }
                                                         $query1 = "SELECT name FROM categories WHERE id =" . $row['category_id'] . "";
                                                         $result1 = mysqli_query($connection, $query1);
                                                         $category_row = mysqli_fetch_assoc($result1);
@@ -73,19 +65,16 @@
 
                                                         echo "<tr>".
                                                         "<td>". $row['name'] ."</td>".
-                                                        "<td>". $row['description'] ."</td>".
-                                                        "<td> $". $row['first_price'] ."</td>".
-                                                        "<td> $". $row['price'] ."</td>".
-                                                        "<td>". $row['quantity'] ."</td>".
+                                                        "<td>". $row['address'] ."</td>".
+                                                        "<td>". $row['phone'] ."</td>".
                                                         "<td>". $category_row['name'] ."</td>".
-                                                        "<td>". $status ."</td>".
-                                                        "<td> <img width='75px' height='75px' src='http://localhost/final_project/dashboard/uploads/images/". $row['image'] ."'</td>".
-                                                        "<td> <a href='edit_product.php?id=". $row['id'] ."' class='btn btn-primary'>Edit
+                                                        "<td> <img width='75px' height='75px' src='http://localhost/project/dashboard/uploads/images/". $row['image'] ."'</td>".
+                                                        "<td> <a href='edit_store.php?id=". $row['id'] ."' class='btn btn-primary'>Edit
                                                                 </a></td>".
                                                         "<td>
-                                                        <form class='c_form' action='delete_product.php' method='POST'>
+                                                        <form class='c_form' action='delete_store.php' method='POST'>
                                                         <input name='id' type='hidden' value='".$row['id']."'>
-                                                            <button type='button' class='btn btn-danger delete_product' id='delete-btn'>
+                                                            <button type='button' class='btn btn-danger delete_store' id='delete-btn'>
                                                                 DELETE
                                                             </button>
                                                         </form>
@@ -100,14 +89,14 @@
                                         <div class="row">
                                             <div class="col-12">
                                                 <?php
-                                                    $query = "SELECT count(id) AS row_number FROM products";
+                                                    $query = "SELECT count(id) AS row_number FROM stores";
                                                     $result = mysqli_query($connection, $query);
                                                     $row = mysqli_fetch_assoc($result);
                                                     $pages = ceil($row['row_number'] / $limit);
 
                                                     echo "<ul class='pagination'>";
                                                     for ($i=1; $i <= $pages; $i++) { 
-                                                        echo "<li class='page-item'><a href='show_all_products.php?page=". $i ."' class='page-link'> $i </a> </li>";
+                                                        echo "<li class='page-item'><a href='show_all_stores.php?page=". $i ."' class='page-link'> $i </a> </li>";
                                                     }
                                                 ?>
                                             </div>
@@ -124,8 +113,8 @@
 </div>
 <?php include_once("shared/footer.php"); ?> 
 <script>
-    $('.delete_product').click(function (event) {
-        var result = confirm('Are you sure you want to delete this product?');
+    $('.delete_store').click(function (event) {
+        var result = confirm('Are you sure you want to delete this store?');
 
         if(result){
             $('.c_form').submit();

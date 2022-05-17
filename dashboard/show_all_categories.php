@@ -39,15 +39,13 @@
                                         <thead>
                                         <tr>
                                             <th>Category Name</th>
-                                            <th> Category Details</th>
-                                            <th>Status</th>
                                             <th colspan="2"></th>
                                         </tr>
                                         </thead>
                                         <tbody>
                                             <?php 
                                                 include_once('db/db_connection.php');
-                                                $limit = 4;
+                                                $limit = 3;
                                                 $page = $_GET['page'] ?? 1; 
                                                 $offset = ($page - 1) * $limit;
 
@@ -56,15 +54,8 @@
                                                 $result = mysqli_query($connection, $query);
                                                 if(mysqli_num_rows($result) > 0){
                                                     while($row = mysqli_fetch_assoc($result)){
-                                                        if($row['status'] == 1){
-                                                            $status = "<span class='badge badge-success'>Active</span>";
-                                                        }else {
-                                                            $status = "<span class='badge badge-danger'>Inactive</span>";
-                                                        }
                                                         echo "<tr>".
                                                         "<td>". $row['name'] ."</td>".
-                                                        "<td>". $row['description'] ."</td>".
-                                                        "<td>". $status ."</td>".
                                                         "<td> <a href='edit_category.php?id=". $row['id'] ."' class='btn btn-primary'>Edit
                                                                 </a></td>".
                                                         "<td>

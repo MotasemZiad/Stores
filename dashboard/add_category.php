@@ -4,21 +4,15 @@
     $success = false;
     if($_SERVER['REQUEST_METHOD'] == "POST"){
         $name = $_POST['category_name'];
-        $description = $_POST['category_description'];
-        $status = isset($_POST['category_status']) ? 1 : 0;
-        $date = Date("y-m-d h:i:s");
 
         if(empty($name)){
           $errors["name_error"] = "Name is required!";
-        }
-        if(empty($description)){
-          $errors["description_error"] = "Description is required!";
         }
 
         if(count($errors) > 0){
           $errors['general_error'] = "Please fill fields";
         }else {
-          $query = "INSERT INTO categories(name, description, status, created_at) VALUES('$name', '$description', '$status', '$date')";
+          $query = "INSERT INTO categories(name) VALUES('$name')";
           $result = mysqli_query($connection, $query);
           if($result){
               $errors = [];
@@ -86,26 +80,6 @@
                                   echo "<span class='text-danger'>". $errors['name_error']. "</span>";
                                 }
                               ?>
-                            </div>
-                          </div>
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="projectinput2">Category Description</label>
-                              <input type="text" id="projectinput2" class="form-control" placeholder="Category Description"
-                              name="category_description">
-                              <?php
-                                if(!empty($errors['description_error'])){
-                                  echo "<span class='text-danger'>". $errors['description_error']. "</span>";
-                                }
-                              ?>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row">
-                          <div class="col-md-6">
-                            <div class="form-group">
-                              <label for="projectinput3">Status</label>
-                              <input type="checkbox" id="projectinput3" name="category_status" value="1">
                             </div>
                           </div>
                         </div>
