@@ -7,13 +7,14 @@
 					<!-- NAV -->
 					<ul class="main-nav nav navbar-nav">
 						<li class="active"><a href="#">Home</a></li>
+						<li><a href="#">Hot Deals</a></li>
 						<?php 
 							include_once('../dashboard/db/db_connection.php');
-							$query = 'SELECT * FROM categories WHERE status = 1';
+							$query = 'SELECT * FROM categories';
 							$result = mysqli_query($connection, $query);
 							while ($row = mysqli_fetch_assoc($result)) {
 								$category_id = $row['id'];	
-								echo "<li><a href='show_products.php?category_id=$category_id'>" . $row['name'] . "</a></li>";
+								echo "<li><a href='show_stores.php?category_id=$category_id'>" . $row['name'] . "</a></li>";
 							}
 						?>
 						<!-- <li><a href="#">Hot Deals</a></li>

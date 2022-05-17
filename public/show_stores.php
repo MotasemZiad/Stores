@@ -1,7 +1,7 @@
 <?php 
     include_once('../dashboard/db/db_connection.php');
     $category_id = $_GET['category_id'];
-    $query1 = "SELECT * FROM products WHERE category_id = $category_id";
+    $query1 = "SELECT * FROM stores WHERE category_id = $category_id";
     $result1 = mysqli_query($connection, $query1);
 ?>
 
@@ -16,7 +16,6 @@
         <?php 
             include_once('shared/header.php');
             include_once('shared/nav.php');
-			# some updates regarding the fucking master branch
         ?>
 		<!-- Section -->
 		<div class="section">
@@ -27,25 +26,25 @@
 
 					<div class="col-md-12">
 						<div class="section-title text-center">
-							<h3 class="title">Related Products</h3>
+							<h3 class="title">Related Stores</h3>
 						</div>
 					</div>
                     
                     <?php 
-                        while($product = mysqli_fetch_assoc($result1)){
+                        while($store = mysqli_fetch_assoc($result1)){
                             echo '
                             <div class="col-md-3 col-xs-6">
                                 <div class="product">
                                     <div class="product-img">
-                                        <img src=" http://localhost/final_project/dashboard/uploads/images/' . $product['image'] . '" alt="">
+                                        <img src=" http://localhost/project/dashboard/uploads/images/' . $store['image'] . '" alt="">
                                         <div class="product-label">
                                             <span class="sale">-30%</span>
                                         </div>
                                     </div>
                                     <div class="product-body">
-                                        <p class="product-category"> ' . $product['category_id'] . ' Category</p>
-                                        <h3 class="product-name"><a href="#">' . $product['name'] . '</a></h3>
-                                        <h4 class="product-price"> $' . $product['price'] . '<del class="product-old-price"> $' . $product['first_price'] . '</del></h4>
+                                        <p class="product-category"> ' . $store['category_id'] . ' Category</p>
+                                        <h3 class="product-name"><a href="#">' . $store['name'] . '</a></h3>
+                                        <h4 class="product-price"> +' . $store['phone'] . '<h4>' . $store['address'] . '</h4></h4>
                                         <div class="product-rating">
                                         </div>
                                         <div class="product-btns">

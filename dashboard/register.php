@@ -21,7 +21,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                     </div>
                   </div>
                   <h6 class="card-subtitle line-on-side text-muted text-center font-small-3 pt-2">
-                    <span>Login with Modern</span>
+                    <span>Register with Modern</span>
                   </h6>
                 </div>
                 <div class="card-content">
@@ -57,7 +57,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                 <div class="card-footer">
                   <div class="">
                     <p class="float-sm-left text-center m-0"><a href="recover-password.html" class="card-link">Recover password</a></p>
-                    <p class="float-sm-right text-center m-0">New to Modern Admin? <a href="register-simple.html" class="card-link">Sign Up</a></p>
+                    <p class="float-sm-right text-center m-0">New to Moden Admin? <a href="register-simple.html" class="card-link">Sign Up</a></p>
                   </div>
                 </div>
               </div>
