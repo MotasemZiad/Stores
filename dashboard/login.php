@@ -1,3 +1,7 @@
+<?php
+  
+?>
+
 <!DOCTYPE html>
 <html class="loading" lang="en" data-textdirection="ltr">
 
@@ -48,7 +52,7 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                             <label for="remember-me"> Remember Me</label>
                           </fieldset>
                         </div>
-                        <div class="col-md-6 col-12 text-center text-md-right"><a href="recover-password.html" class="card-link">Forgot Password?</a></div>
+                        <div class="col-md-6 col-12 text-center text-md-right"><a href="#" class="card-link">Forgot Password?</a></div>
                       </div>
                       <button type="submit" class="btn btn-info btn-lg btn-block"><i class="ft-unlock"></i> Login</button>
                     </form>
@@ -56,8 +60,8 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                 </div>
                 <div class="card-footer">
                   <div class="">
-                    <p class="float-sm-left text-center m-0"><a href="recover-password.html" class="card-link">Recover password</a></p>
-                    <p class="float-sm-right text-center m-0">New to Modern Admin? <a href="register-simple.html" class="card-link">Sign Up</a></p>
+                    <p class="float-sm-left text-center m-0"><a href="#" class="card-link">Recover password</a></p>
+                    <p class="float-sm-right text-center m-0">New to Modern Admin? <a href="register.php" class="card-link">Register</a></p>
                   </div>
                 </div>
               </div>
