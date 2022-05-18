@@ -1,5 +1,32 @@
 <?php
-  
+  include_once('db/db_connection.php');
+  $errors = [];
+  $success = false;
+  if($_SERVER['REQUEST_METHOD'] == "POST"){
+      $username = $_POST['username'];
+      $password = md5($_POST['password']);
+
+      if(empty($name)){
+        $errors["username_error"] = "Username is required!";
+      }
+      if(empty($password)){
+        $errors["password_error"] = "Password is required!";
+      }
+
+      if(count($errors) > 0){
+        $errors['general_error'] = "Please fill fields";
+      }else {
+        $query = "INSERT INTO categories(name) VALUES('$name')";
+        $result = mysqli_query($connection, $query);
+        if($result){
+            $errors = [];
+            $success = true;
+            header('Location: index.php');
+        }else {
+            $errors['general_error'] = "Error". mysqli_error($connection);
+        }  
+      }
+  }
 ?>
 
 <!DOCTYPE html>
@@ -30,20 +57,37 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                 </div>
                 <div class="card-content">
                   <div class="card-body">
-                    <form class="form-horizontal form-simple" action="index.html" novalidate>
+                    <?php
+                      if(!empty($errors['general_error'])){
+                        echo "<div class='alert alert-danger'>". $errors['general_error']. "</div>";
+                      }elseif($success){
+                        echo "<div class='alert alert-success'> User login successfully</div>";
+                      }
+                    ?>
+                    <form class="form-horizontal form-simple" method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
                       <fieldset class="form-group position-relative has-icon-left mb-0">
-                        <input type="text" class="form-control form-control-lg input-lg" id="user-name" placeholder="Your Username"
-                        required>
+                        <input type="text" class="form-control form-control-lg input-lg" id="username" placeholder="Your Username"
+                        required name="username">
                         <div class="form-control-position">
                           <i class="ft-user"></i>
                         </div>
+                        <?php
+                            if(!empty($errors['username_error'])){
+                              echo "<span class='text-danger'>". $errors['username_error']. "</span>";
+                            }
+                        ?>
                       </fieldset>
                       <fieldset class="form-group position-relative has-icon-left">
                         <input type="password" class="form-control form-control-lg input-lg" id="user-password"
-                        placeholder="Enter Password" required>
+                        placeholder="Enter Password" required name="password">
                         <div class="form-control-position">
                           <i class="la la-key"></i>
                         </div>
+                        <?php
+                            if(!empty($errors['password_error'])){
+                              echo "<span class='text-danger'>". $errors['password_error']. "</span>";
+                            }
+                        ?>
                       </fieldset>
                       <div class="form-group row">
                         <div class="col-md-6 col-12 text-center text-md-left">
