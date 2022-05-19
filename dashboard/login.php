@@ -3,11 +3,11 @@
   $errors = [];
   $success = false;
   if($_SERVER['REQUEST_METHOD'] == "POST"){
-      $username = $_POST['username'];
+      $email = $_POST['email'];
       $password = md5($_POST['password']);
 
-      if(empty($name)){
-        $errors["username_error"] = "Username is required!";
+      if(empty($email)){
+        $errors["email_error"] = "Email is required!";
       }
       if(empty($password)){
         $errors["password_error"] = "Password is required!";
@@ -16,9 +16,11 @@
       if(count($errors) > 0){
         $errors['general_error'] = "Please fill fields";
       }else {
-        $query = "INSERT INTO categories(name) VALUES('$name')";
+        $query = "SELECT * FROM admins WHERE email = '$email' AND password = '$password'";
         $result = mysqli_query($connection, $query);
-        if($result){
+        if(mysqli_num_rows($result) > 0){
+            session_start();
+            $_SESSION['is_login'] = true;
             $errors = [];
             $success = true;
             header('Location: index.php');
@@ -66,14 +68,14 @@ data-open="click" data-menu="vertical-menu-modern" data-col="1-column">
                     ?>
                     <form class="form-horizontal form-simple" method="POST" action="<?php $_SERVER['PHP_SELF'] ?>">
                       <fieldset class="form-group position-relative has-icon-left mb-0">
-                        <input type="text" class="form-control form-control-lg input-lg" id="username" placeholder="Your Username"
-                        required name="username">
+                        <input type="text" class="form-control form-control-lg input-lg" id="email" placeholder="Your Email"
+                        required name="email">
                         <div class="form-control-position">
                           <i class="ft-user"></i>
                         </div>
                         <?php
-                            if(!empty($errors['username_error'])){
-                              echo "<span class='text-danger'>". $errors['username_error']. "</span>";
+                            if(!empty($errors['email_error'])){
+                              echo "<span class='text-danger'>". $errors['email_error']. "</span>";
                             }
                         ?>
                       </fieldset>
